@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, BookOpen, PenTool, Gamepad2, Award, Volume2, Star, Sliders, X, Check } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { SCHOOL_INFO } from '../data/kg1CurriculumData';
-import { speech } from '../services/speechService';
+import { speech, sfx } from '../services/speechService';
 
 export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
   const [showVoiceModal, setShowVoiceModal] = useState(false);
@@ -129,7 +130,10 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
             )}
 
             <div 
-              onClick={() => speech.speak(`ما شاء الله عليك يا بطل! جمعت ${stars} نجمة ذهبية شاطر جداً!`)}
+              onClick={() => {
+                sfx.playMagicChime();
+                confetti({ particleCount: 30, spread: 50 });
+              }}
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform border border-amber-500/30"
               title="نجوم البطل"
             >

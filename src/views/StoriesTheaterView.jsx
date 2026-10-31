@@ -17,13 +17,13 @@ export default function StoriesTheaterView({ completedStories, onCompleteStory }
   const handleAnswer = (idx) => {
     setSelectedAnswer(idx);
     if (idx === activeStory.correctIndex) {
+      speech.stop();
       sfx.playFullCelebration();
       confetti({ particleCount: 70, spread: 60 });
-      speech.speak('إجابة صح يا بطل! كسبت خمس نجوم ذهبية!');
       onCompleteStory(activeStory.id);
     } else {
+      speech.stop();
       sfx.playTryAgain();
-      speech.speak('اسمع الحكاية كويس وجرّب تاني يا شاطر!');
     }
   };
 

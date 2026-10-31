@@ -261,7 +261,7 @@ export default function BookActivitiesView({ onAddStars }) {
       confetti({ particleCount: 45, spread: 55 });
       if (onAddStars) onAddStars(1);
     } else {
-      speech.speak(item.hint);
+      sfx.playTryAgain();
     }
   };
 
@@ -274,7 +274,7 @@ export default function BookActivitiesView({ onAddStars }) {
       confetti({ particleCount: 40, spread: 50 });
       if (onAddStars) onAddStars(1);
     } else {
-      speech.speakEgyptianTryAgain();
+      sfx.playTryAgain();
     }
   };
 
@@ -297,11 +297,9 @@ export default function BookActivitiesView({ onAddStars }) {
 
     if (next.length === currentExercise.activity4.letters.length) {
       setTimeout(() => {
+        speech.stop();
         confetti({ particleCount: 90, spread: 80 });
         sfx.playFullCelebration();
-        setTimeout(() => {
-          speech.speak(`يا سلام على الشطارة! كونت كلمة: ${currentExercise.activity4.wordResult}! ${currentExercise.activity4.meaning}`);
-        }, 1200);
         if (onAddStars) onAddStars(3);
       }, 300);
     }

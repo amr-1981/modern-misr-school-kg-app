@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Volume2, PenTool, CheckCircle2, Sparkles, Star, BookOpen } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { LETTERS_DATA, THEMES, SCHOOL_INFO } from '../data/kg1CurriculumData';
-import { speech } from '../services/speechService';
+import { speech, sfx } from '../services/speechService';
 
 export default function LettersGardenView({ 
   childName, 
@@ -284,7 +285,9 @@ export default function LettersGardenView({
               <button
                 onClick={() => {
                   onMarkMastered(selectedLetter.id);
-                  speech.speak(`ممتاز يا بطل المدرسة المصرية الحديثة! أتقنت ${selectedLetter.name} وحصلت على نجوم ذهبية!`);
+                  speech.stop();
+                  sfx.playFullCelebration();
+                  confetti({ particleCount: 60, spread: 60 });
                 }}
                 className="w-full py-3 rounded-2xl bg-blue-950 hover:bg-blue-900 text-white font-black text-xs shadow-lg flex items-center justify-center gap-2 transition-transform hover:scale-105"
               >

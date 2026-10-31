@@ -94,13 +94,13 @@ export default function TracingCanvasModal({ letterObj, onClose, onComplete }) {
   const handleClear = () => {
     setHasDrawn(false);
     drawGuideLetter();
-    speech.speak('مسحنا السبورة، يلا نكتب مرة كمان بخط جميل!');
+    sfx.playPop();
   };
 
   const handleFinish = () => {
+    speech.stop();
     confetti({ particleCount: 90, spread: 70 });
     sfx.playFullCelebration();
-    speech.speak(`تسلم إيدك يا بطل! خطك جميل وممتاز في كتابة ${letterObj.name}!`);
     if (onComplete) onComplete(letterObj.id);
     setTimeout(onClose, 800);
   };

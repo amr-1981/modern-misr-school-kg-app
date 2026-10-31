@@ -368,15 +368,24 @@ class SpeechService {
     } catch (e) {}
   }
 
-  // Celebratory Feedback: Realistic Applause + Fanfare + Short Sweet Praise
-  playRewardCelebration(customWord = null) {
+  // Pure Sound Effects for Rewards (No synthesized voice overlay)
+  playRewardCelebration() {
+    this.stop();
     sfx.playFullCelebration();
-    const shortPhrases = ['برافو!', 'شاطر أوي!', 'ممتاز يا بطل!', 'تسلم إيدك!'];
-    const chosen = customWord || shortPhrases[Math.floor(Math.random() * shortPhrases.length)];
-    // Short 1-word joyful cheer after 300ms
-    setTimeout(() => {
-      this.speak(chosen);
-    }, 280);
+  }
+
+  // Pure Sound Effect for Try Again
+  playTryAgain() {
+    this.stop();
+    sfx.playTryAgain();
+  }
+
+  speakEgyptianPraise() {
+    this.playRewardCelebration();
+  }
+
+  speakEgyptianTryAgain() {
+    this.playTryAgain();
   }
 
   stop() {

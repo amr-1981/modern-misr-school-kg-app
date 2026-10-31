@@ -36,16 +36,14 @@ export default function WritingAndBlendingView({ onOpenTracing, onAddStars }) {
 
       if (updated.length === activeBlend.letters.length) {
         setIsSuccess(true);
+        speech.stop();
         sfx.playFullCelebration();
         confetti({ particleCount: 80, spread: 70 });
-        setTimeout(() => {
-          speech.speak(`تسلم إيدك يا بطل! ركّبت كلمة: ${activeBlend.word}! ${activeBlend.audio}`);
-          if (onAddStars) onAddStars(2);
-        }, 900);
+        if (onAddStars) onAddStars(2);
       }
     } else {
+      speech.stop();
       sfx.playTryAgain();
-      speech.speak('لا يا بطل، فكّر في صوت الحرف اللي بعده!');
     }
   };
 
