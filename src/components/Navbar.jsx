@@ -43,7 +43,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
   };
 
   const handleTestVoice = () => {
-    speech.speak('أَهْلاً بِيكْ يَا بَطَلْ فِي الْمَدْرَسَةِ الْمَصْرِيَّةِ الْحَدِيثَةِ بِطَرَابُلُسْ! شَاطِرْ أَوْي يَا عَسَلْ! بَرَافُو عَلِيكْ!');
+    speech.speak('أَهْلاً بِيكْ يَا بَطَلْ فِي الْمَدْرَسَةِ الْمَصْرِيَّة');
   };
 
   return (
@@ -164,20 +164,27 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
 
       {/* Egyptian Voice Settings Modal */}
       {showVoiceModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-4 border-amber-300 animate-in zoom-in-95 space-y-4">
+        <div 
+          onClick={() => setShowVoiceModal(false)}
+          className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-4 border-amber-300 animate-in zoom-in-95 space-y-4 my-auto max-h-[90vh] overflow-y-auto"
+          >
             
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🎙️</span>
                 <div>
-                  <h3 className="font-black text-slate-900 text-base">ضبط نطق المعلمة المصرية (ar-EG)</h3>
+                  <h3 className="font-black text-slate-900 text-base">ضبط نطق المعلمة (ar-EG)</h3>
                   <p className="text-[11px] text-slate-500 font-bold">تحسين نطق فصول السنة والتشجيع بالعامية</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowVoiceModal(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-700 font-black flex items-center justify-center"
+                className="w-9 h-9 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-700 font-black flex items-center justify-center transition-colors text-lg"
+                title="إغلاق"
               >
                 ✕
               </button>
@@ -187,7 +194,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
             <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-3.5 space-y-1">
               <span className="text-xs text-amber-900 font-bold block">الصوت المفعل حالياً على جهازك:</span>
               <div className="font-black text-sm text-blue-950 flex items-center justify-between">
-                <span>👩‍🏫 {currentVoiceName || 'جاري تحميل الصوت المصري...'}</span>
+                <span>👩‍🏫 {currentVoiceName || 'صوت المعلمة المصرية'}</span>
                 <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">نشط ✓</span>
               </div>
             </div>
@@ -257,7 +264,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
             </div>
 
             {/* Test Voice Button */}
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               <button
                 onClick={handleTestVoice}
                 className="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95"
@@ -265,10 +272,19 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
                 <Volume2 className="w-4 h-4 animate-pulse" />
                 <span>جرّب نطق المعلمة بالعامية الآن 🔊</span>
               </button>
+
+              {/* Explicit Big Save & Close Button */}
+              <button
+                onClick={() => setShowVoiceModal(false)}
+                className="w-full py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95"
+              >
+                <Check className="w-4 h-4" />
+                <span>حفظ وإغلاق (تم) ✓</span>
+              </button>
             </div>
 
             <p className="text-[10px] text-slate-400 text-center font-bold">
-              موصى به: متصفح مايكروسوفت إيدج وجوجل كروم يوفران أفضل نطق مصري طبيعي لـ Microsoft Hoda و Salma.
+              يمكنك أيضاً النقر خارج هذا المربع أو زر (✕) للإغلاق في أي وقت.
             </p>
           </div>
         </div>
