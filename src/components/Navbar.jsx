@@ -1,9 +1,33 @@
-import React from 'react';
-import { Sparkles, BookOpen, PenTool, Gamepad2, Award, Volume2, Star, CheckSquare } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, BookOpen, PenTool, Gamepad2, Award, Volume2, Star, Sliders, X, Check } from 'lucide-react';
 import { SCHOOL_INFO } from '../data/kg1CurriculumData';
 import { speech } from '../services/speechService';
 
 export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
+  const [voiceList, setVoiceList] = useState([]);
+  const [currentVoiceName, setCurrentVoiceName] = useState('');
+  const [currentRate, setCurrentRate] = useState(0.88);
+  const [currentPitch, setCurrentPitch] = useState(1.15);
+
+  useEffect(() => {
+    const updateVoiceState = () => {
+      setVoiceList(speech.arabicVoices || []);
+      if (speech.selectedVoice) {
+        setCurrentVoiceName(speech.selectedVoice.name);
+      }
+    };
+
+    updateVoiceState();
+    const unsub = speech.subscribe((event, data) => {
+      if (event === 'voicesUpdated' || event === 'voiceChanged') {
+        updateVoiceState();
+      }
+    });
+
+    return unsub;
+  }, []);
+
   const navItems = [
     { id: 'letters', label: 'حديقة الحروف', emoji: '🔤', audio: 'يلا بينا على حديقة الحروف الجميلة!' },
     { id: 'book-activities', label: 'تمارين الكتاب', emoji: '📝', audio: 'يلا نحل تمارين وأنشطة كتاب تواصل الوزاري!' },
@@ -18,12 +42,16 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
     speech.speak(item.audio);
   };
 
+  const handleTestVoice = () => {
+    speech.speak('أَهْلاً بِيكْ يَا بَطَلْ فِي الْمَدْرَسَةِ الْمَصْرِيَّةِ الْحَدِيثَةِ بِطَرَابُلُسْ! شَاطِرْ أَوْي يَا عَسَلْ! بَرَافُو عَلِيكْ!');
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-2 border-amber-200 shadow-sm no-print">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-2 border-amber-200 shadow-sm no-print w-full max-w-full">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-2 sm:gap-4">
           
-          {/* School Logo & Clean Non-Overlapping Brand Header */}
+          {/* School Logo & Clean Brand Header */}
           <div 
             onClick={() => {
               setActiveTab('letters');
@@ -45,7 +73,6 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
                   {SCHOOL_INFO.nameAr}
                 </span>
 
-                {/* Fixed Non-Overlapping Badge */}
                 <span className="inline-flex items-center gap-1 whitespace-nowrap text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 shadow-xs">
                   <span>KG1</span>
                   <span>•</span>
@@ -79,8 +106,18 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
             })}
           </nav>
 
-          {/* Child Stars & Greeting Badge */}
+          {/* Controls: Voice Settings, Child Badge, Stars */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Egyptian Voice Tuner Button */}
+            <button
+              onClick={() => setShowVoiceModal(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 text-xs font-black shadow-xs transition-colors"
+              title="ضبط صوت المعلمة المصرية"
+            >
+              <span className="text-sm">🎙️</span>
+              <span className="hidden md:inline">صوت المعلمة</span>
+            </button>
+
             {childName && (
               <button
                 onClick={() => speech.speak(`أهلاً بالبطل الشاطر ${childName}! معاك ${stars} نجمة ذهبية بتلمع!`)}
@@ -93,7 +130,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
 
             <div 
               onClick={() => speech.speak(`ما شاء الله عليك يا بطل! جمعت ${stars} نجمة ذهبية شاطر جداً!`)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform border border-amber-500/30"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform border border-amber-500/30"
               title="نجوم البطل"
             >
               <Star className="w-4 h-4 fill-slate-950 text-slate-950" />
@@ -124,6 +161,119 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
           })}
         </div>
       </div>
+
+      {/* Egyptian Voice Settings Modal */}
+      {showVoiceModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-4 border-amber-300 animate-in zoom-in-95 space-y-4">
+            
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🎙️</span>
+                <div>
+                  <h3 className="font-black text-slate-900 text-base">ضبط نطق المعلمة المصرية (ar-EG)</h3>
+                  <p className="text-[11px] text-slate-500 font-bold">تحسين نطق فصول السنة والتشجيع بالعامية</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowVoiceModal(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-700 font-black flex items-center justify-center"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Current Active Voice Card */}
+            <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-3.5 space-y-1">
+              <span className="text-xs text-amber-900 font-bold block">الصوت المفعل حالياً على جهازك:</span>
+              <div className="font-black text-sm text-blue-950 flex items-center justify-between">
+                <span>👩‍🏫 {currentVoiceName || 'جاري تحميل الصوت المصري...'}</span>
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">نشط ✓</span>
+              </div>
+            </div>
+
+            {/* Voice Dropdown (If device has multiple voices) */}
+            {voiceList.length > 1 && (
+              <div className="space-y-1.5">
+                <label className="text-xs font-black text-slate-700 block">اختر صوت المعلمة المفضل:</label>
+                <select
+                  value={currentVoiceName}
+                  onChange={(e) => {
+                    setCurrentVoiceName(e.target.value);
+                    speech.setVoice(e.target.value);
+                  }}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                >
+                  {voiceList.map((v, i) => (
+                    <option key={i} value={v.name}>
+                      {v.name} ({v.lang})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Sliders: Speed and Pitch */}
+            <div className="space-y-3 pt-2 border-t border-slate-100">
+              <div>
+                <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-1">
+                  <span>سرعة الكلام للأطفال:</span>
+                  <span className="text-amber-800 font-black">{Math.round(currentRate * 100)}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0.7"
+                  max="1.2"
+                  step="0.05"
+                  value={currentRate}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    setCurrentRate(val);
+                    speech.setRate(val);
+                  }}
+                  className="w-full accent-amber-500"
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-1">
+                  <span>نبرة الصوت (دفء النطق):</span>
+                  <span className="text-amber-800 font-black">{Math.round(currentPitch * 100)}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0.9"
+                  max="1.4"
+                  step="0.05"
+                  value={currentPitch}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    setCurrentPitch(val);
+                    speech.setPitch(val);
+                  }}
+                  className="w-full accent-amber-500"
+                />
+              </div>
+            </div>
+
+            {/* Test Voice Button */}
+            <div className="pt-2">
+              <button
+                onClick={handleTestVoice}
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95"
+              >
+                <Volume2 className="w-4 h-4 animate-pulse" />
+                <span>جرّب نطق المعلمة بالعامية الآن 🔊</span>
+              </button>
+            </div>
+
+            <p className="text-[10px] text-slate-400 text-center font-bold">
+              موصى به: متصفح مايكروسوفت إيدج وجوجل كروم يوفران أفضل نطق مصري طبيعي لـ Microsoft Hoda و Salma.
+            </p>
+          </div>
+        </div>
+      )}
+
     </header>
   );
 }

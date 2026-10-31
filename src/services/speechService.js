@@ -1,5 +1,5 @@
 // Child-Friendly Speech Synthesis Service for Modern Misr School KG1
-// Egyptian Colloquial Arabic (بالعامية المصرية المحببة لأطفال الروضة)
+// Prioritizes Authentic Egyptian Voices: Microsoft Hoda (ar-EG), Salma Neural, Google ar-EG
 
 class SoundEffects {
   constructor() {
@@ -79,7 +79,8 @@ class SpeechService {
   constructor() {
     this.synth = typeof window !== 'undefined' ? window.speechSynthesis : null;
     this.isPlaying = false;
-    this.rate = 0.85; // Slightly slower for clear KG1 phonics
+    this.rate = 0.88; // Ideal kindergarten tempo
+    this.pitch = 1.15; // Cheerful warm Egyptian teacher pitch
     this.voices = [];
     this.arabicVoices = [];
     this.selectedVoice = null;
@@ -117,7 +118,7 @@ class SpeechService {
         attempts++;
         if (this.voices.length > 0 || attempts > 10) clearInterval(interval);
         else this.loadVoices();
-      }, 250);
+      }, 200);
     }
   }
 
@@ -131,26 +132,54 @@ class SpeechService {
         return (
           lang.startsWith('ar') ||
           lang.includes('ar-') ||
+          lang.includes('ar_') ||
           name.includes('arabic') ||
           name.includes('عربي') ||
+          name.includes('hoda') ||
+          name.includes('salma') ||
           name.includes('maged') ||
-          name.includes('tarik') ||
-          name.includes('naayf') ||
-          name.includes('shakir')
+          name.includes('shakir') ||
+          name.includes('naayf')
         );
       });
 
-      if (this.arabicVoices.length > 0 && !this.selectedVoice) {
-        // Prefer Egyptian Arabic or warm clear Arabic voice
-        const egVoice = this.arabicVoices.find(v => (v.lang || '').includes('EG'));
-        const maleVoice = this.arabicVoices.find(v => {
+      if (this.arabicVoices.length > 0) {
+        // Priority 1: Egyptian Voices (Microsoft Salma Natural, Microsoft Hoda ar-EG, Google ar-EG)
+        const egyptianVoice = this.arabicVoices.find(v => {
           const n = (v.name || '').toLowerCase();
-          return n.includes('shakir') || n.includes('maged') || n.includes('tarik') || n.includes('naayf') || n.includes('wahab');
+          const l = (v.lang || '').toLowerCase();
+          return (
+            n.includes('salma') ||
+            n.includes('hoda') ||
+            l.includes('eg') ||
+            l === 'ar-eg' ||
+            n.includes('egypt') ||
+            n.includes('مصر')
+          );
         });
-        this.selectedVoice = egVoice || maleVoice || this.arabicVoices[0];
+
+        // Priority 2: High quality Natural / Neural voices
+        const naturalVoice = this.arabicVoices.find(v => {
+          const n = (v.name || '').toLowerCase();
+          return n.includes('natural') || n.includes('online') || n.includes('neural');
+        });
+
+        this.selectedVoice = egyptianVoice || naturalVoice || this.arabicVoices[0];
       }
-      this.notify('voicesUpdated', { arabicVoices: this.arabicVoices, selectedVoice: this.selectedVoice });
+      this.notify('voicesUpdated', { 
+        arabicVoices: this.arabicVoices, 
+        selectedVoice: this.selectedVoice,
+        selectedVoiceName: this.selectedVoice ? this.selectedVoice.name : 'صوت المتصفح التلقائي'
+      });
     } catch (e) {}
+  }
+
+  setVoice(voiceName) {
+    const found = this.arabicVoices.find(v => v.name === voiceName);
+    if (found) {
+      this.selectedVoice = found;
+      this.notify('voiceChanged', { selectedVoice: this.selectedVoice });
+    }
   }
 
   subscribe(listener) {
@@ -169,6 +198,27 @@ class SpeechService {
     this.notify('rateChange', { rate: this.rate });
   }
 
+  setPitch(newPitch) {
+    this.pitch = Math.max(0.8, Math.min(1.6, newPitch));
+    this.notify('pitchChange', { pitch: this.pitch });
+  }
+
+  // Egyptian dialect phonetic enhancer for clear kindergarten articulation
+  enhanceEgyptianPhonetics(text) {
+    if (!text) return '';
+    return text
+      // Common dialect substitutions for natural speech
+      .replace(/اضغط على/g, 'دوس على')
+      .replace(/اضغطي على/g, 'دوسي على')
+      .replace(/اختر/g, 'اختار')
+      .replace(/هيا بنا/g, 'يلا بينا')
+      .replace(/هيا/g, 'يلا')
+      .replace(/ممتاز/g, 'شاطر أوي!')
+      .replace(/رائع/g, 'برافو عليك!')
+      .replace(/أحسنت/g, 'تسلم إيدك يا بطل!')
+      .replace(/حاول مرة أخرى/g, 'معلش فكّر تاني وجرّب كمان مرة');
+  }
+
   speak(text, onEndCallback = null) {
     if (!text || !text.trim()) return;
     this.stop();
@@ -179,15 +229,18 @@ class SpeechService {
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    const enhancedText = this.enhanceEgyptianPhonetics(text);
+    const utterance = new SpeechSynthesisUtterance(enhancedText);
+
     if (this.selectedVoice) {
       utterance.voice = this.selectedVoice;
       utterance.lang = this.selectedVoice.lang || 'ar-EG';
     } else {
       utterance.lang = 'ar-EG';
     }
+
     utterance.rate = this.rate;
-    utterance.pitch = 1.15; // Friendly warm pitch for 4-year-olds
+    utterance.pitch = this.pitch;
 
     if (typeof window !== 'undefined') {
       window._kgActiveUtterance = utterance;
@@ -195,20 +248,20 @@ class SpeechService {
 
     utterance.onstart = () => {
       this.isPlaying = true;
-      this.notify('start', { text });
+      this.notify('start', { text: enhancedText });
     };
 
     utterance.onend = () => {
       this.isPlaying = false;
       this.releaseWakeLock();
-      this.notify('end', { text });
+      this.notify('end', { text: enhancedText });
       if (onEndCallback) onEndCallback();
     };
 
     utterance.onerror = () => {
       this.isPlaying = false;
       this.releaseWakeLock();
-      this.notify('end', { text });
+      this.notify('end', { text: enhancedText });
     };
 
     try {
@@ -216,7 +269,7 @@ class SpeechService {
     } catch (e) {}
   }
 
-  // Authentic Egyptian Praise Expressions for KG1 Children
+  // Authentic Egyptian Praise Expressions
   speakEgyptianPraise() {
     sfx.playCorrect();
     const praises = [
@@ -225,7 +278,7 @@ class SpeechService {
       'برافو يا عبقري روضتنا، تسلم إيدك الشاطرة!',
       'يا سلام على الشطارة! بطل المدرسة المصرية بطرابلس!',
       'الله عليك يا فنان! شاطر جداً جداً وذكي!',
-      'أحسنت يا بطل الأبطال! نجمة دهب بتلمع عشانك!'
+      'أحسنت يا سكر! نجمة دهب بتلمع عشانك يا بطل!'
     ];
     const phrase = praises[Math.floor(Math.random() * praises.length)];
     setTimeout(() => {
@@ -233,7 +286,7 @@ class SpeechService {
     }, 250);
   }
 
-  // Authentic Egyptian Encouragement when trying again
+  // Authentic Egyptian Encouragement
   speakEgyptianTryAgain() {
     sfx.playTryAgain();
     const tryAgains = [
