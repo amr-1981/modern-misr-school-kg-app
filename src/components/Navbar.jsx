@@ -59,7 +59,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
           </div>
 
           {/* Desktop Giant Kid-Friendly Tabs */}
-          <nav className="hidden xl:flex items-center gap-1.5 shrink-0">
+          <nav className="hidden 2xl:flex items-center gap-1.5 shrink-0">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
@@ -103,8 +103,8 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
 
         </div>
 
-        {/* Mobile & Tablet Kid Navigation Bar (Always reachable & scrollable) */}
-        <div className="flex xl:hidden overflow-x-auto py-2.5 border-t border-amber-100 gap-2 items-center no-scrollbar">
+        {/* Mobile, Tablet & Compact Navigation Bar */}
+        <div className="flex 2xl:hidden overflow-x-auto py-2.5 border-t border-amber-100 gap-2 items-center no-scrollbar">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (

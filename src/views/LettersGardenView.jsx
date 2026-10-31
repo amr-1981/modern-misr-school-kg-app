@@ -118,7 +118,7 @@ export default function LettersGardenView({
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-3">
+        <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-10 gap-2 sm:gap-2.5 w-full">
           {LETTERS_DATA.map((item) => {
             const isSelected = selectedLetter.id === item.id;
             const isMastered = masteredLetters.includes(item.id);
@@ -126,19 +126,19 @@ export default function LettersGardenView({
               <button
                 key={item.id}
                 onClick={() => handleSelectLetter(item)}
-                className={`relative p-4 rounded-3xl border-2 flex flex-col items-center justify-center transition-all ${
+                className={`relative p-2 sm:p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all min-w-0 w-full ${
                   isSelected
-                    ? `bg-gradient-to-br ${item.color} text-white border-transparent shadow-lg scale-105`
+                    ? `bg-gradient-to-br ${item.color} text-white border-transparent shadow-lg scale-105 ring-2 ring-amber-300`
                     : `${item.bgLight} ${item.borderLight} text-slate-800 hover:scale-105`
                 }`}
               >
                 {isMastered && (
-                  <span className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-xs font-black shadow">
+                  <span className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[10px] font-black shadow">
                     ⭐
                   </span>
                 )}
-                <span className="text-4xl font-black mb-1">{item.char}</span>
-                <span className={`text-[11px] font-extrabold ${isSelected ? 'text-white/90' : 'text-slate-600'}`}>
+                <span className="text-2xl sm:text-3xl font-black mb-0.5">{item.char}</span>
+                <span className={`text-[10px] sm:text-[11px] font-extrabold truncate w-full text-center ${isSelected ? 'text-white/90' : 'text-slate-600'}`}>
                   {item.name}
                 </span>
               </button>

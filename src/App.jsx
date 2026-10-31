@@ -64,7 +64,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-50/40 text-slate-800">
+    <div className="min-h-screen flex flex-col bg-amber-50/40 text-slate-800 w-full max-w-full overflow-x-hidden">
       
       <Navbar
         activeTab={activeTab}
