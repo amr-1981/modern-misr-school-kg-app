@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Eraser, CheckCircle2, Volume2, Sparkles } from 'lucide-react';
-import { speech } from '../services/speechService';
+import confetti from 'canvas-confetti';
+import { speech, sfx } from '../services/speechService';
 
 export default function TracingCanvasModal({ letterObj, onClose, onComplete }) {
   const canvasRef = useRef(null);
@@ -97,9 +98,11 @@ export default function TracingCanvasModal({ letterObj, onClose, onComplete }) {
   };
 
   const handleFinish = () => {
-    speech.speak(`الله ينور عليك يا بطل! خطك جميل وممتاز في كتابة ${letterObj.name}! كسبت تلات نجوم ذهبية!`);
+    confetti({ particleCount: 90, spread: 70 });
+    sfx.playFullCelebration();
+    speech.speak(`تسلم إيدك يا بطل! خطك جميل وممتاز في كتابة ${letterObj.name}!`);
     if (onComplete) onComplete(letterObj.id);
-    onClose();
+    setTimeout(onClose, 800);
   };
 
   if (!letterObj) return null;

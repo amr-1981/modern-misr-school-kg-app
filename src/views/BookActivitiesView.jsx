@@ -257,8 +257,8 @@ export default function BookActivitiesView({ onAddStars }) {
     sfx.playPop();
     if (item.startsWith) {
       setSelectedItems(prev => ({ ...prev, [item.id]: true }));
-      speech.speakEgyptianPraise();
-      confetti({ particleCount: 40, spread: 50 });
+      speech.playRewardCelebration();
+      confetti({ particleCount: 45, spread: 55 });
       if (onAddStars) onAddStars(1);
     } else {
       speech.speak(item.hint);
@@ -270,8 +270,8 @@ export default function BookActivitiesView({ onAddStars }) {
     sfx.playPop();
     if (b.isTarget) {
       setFoundBubbles(prev => ({ ...prev, [b.id]: true }));
-      speech.speakEgyptianPraise();
-      confetti({ particleCount: 30, spread: 40 });
+      speech.playRewardCelebration();
+      confetti({ particleCount: 40, spread: 50 });
       if (onAddStars) onAddStars(1);
     } else {
       speech.speakEgyptianTryAgain();
@@ -282,6 +282,7 @@ export default function BookActivitiesView({ onAddStars }) {
   const handlePairClick = (pair) => {
     sfx.playPop();
     speech.speak(pair.soundAudio);
+    sfx.playMagicChime();
     setMatchedPairs(prev => ({ ...prev, [pair.sound]: true }));
     confetti({ particleCount: 35, spread: 50 });
     if (onAddStars) onAddStars(1);
@@ -296,9 +297,11 @@ export default function BookActivitiesView({ onAddStars }) {
 
     if (next.length === currentExercise.activity4.letters.length) {
       setTimeout(() => {
-        confetti({ particleCount: 80, spread: 70 });
-        sfx.playCorrect();
-        speech.speak(`يا سلام على الشطارة! كونت كلمة: ${currentExercise.activity4.wordResult}! ${currentExercise.activity4.meaning}`);
+        confetti({ particleCount: 90, spread: 80 });
+        sfx.playFullCelebration();
+        setTimeout(() => {
+          speech.speak(`يا سلام على الشطارة! كونت كلمة: ${currentExercise.activity4.wordResult}! ${currentExercise.activity4.meaning}`);
+        }, 1200);
         if (onAddStars) onAddStars(3);
       }, 300);
     }

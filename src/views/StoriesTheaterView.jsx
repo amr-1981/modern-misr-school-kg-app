@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Volume2, BookOpen, CheckCircle2, Sparkles, Star } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { STORIES_DATA } from '../data/kg1CurriculumData';
-import { speech } from '../services/speechService';
+import { speech, sfx } from '../services/speechService';
 
 export default function StoriesTheaterView({ completedStories, onCompleteStory }) {
   const [activeStory, setActiveStory] = useState(STORIES_DATA[0]);
@@ -16,10 +17,13 @@ export default function StoriesTheaterView({ completedStories, onCompleteStory }
   const handleAnswer = (idx) => {
     setSelectedAnswer(idx);
     if (idx === activeStory.correctIndex) {
-      speech.speak('إجابة صحيحة يا بطل القراءة! أحسنت، كسبت خمس نجوم ذهبية!');
+      sfx.playFullCelebration();
+      confetti({ particleCount: 70, spread: 60 });
+      speech.speak('إجابة صح يا بطل! كسبت خمس نجوم ذهبية!');
       onCompleteStory(activeStory.id);
     } else {
-      speech.speak('حاول مرة تانية يا بطل، اسمع القصة واختار الإجابة الصح!');
+      sfx.playTryAgain();
+      speech.speak('اسمع الحكاية كويس وجرّب تاني يا شاطر!');
     }
   };
 

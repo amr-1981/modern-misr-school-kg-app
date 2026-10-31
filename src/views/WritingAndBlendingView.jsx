@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { PenTool, Volume2, RotateCcw, CheckCircle2, Sparkles } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { LETTERS_DATA, WORD_BLENDING_EXERCISES } from '../data/kg1CurriculumData';
-import { speech } from '../services/speechService';
+import { speech, sfx } from '../services/speechService';
 
 export default function WritingAndBlendingView({ onOpenTracing, onAddStars }) {
   const [activeBlend, setActiveBlend] = useState(WORD_BLENDING_EXERCISES[0]);
@@ -24,6 +25,7 @@ export default function WritingAndBlendingView({ onOpenTracing, onAddStars }) {
 
   const handlePickLetter = (char) => {
     if (isSuccess) return;
+    sfx.playPop();
     const nextIdx = pickedLetters.length;
     const expectedChar = activeBlend.letters[nextIdx];
 
@@ -34,13 +36,16 @@ export default function WritingAndBlendingView({ onOpenTracing, onAddStars }) {
 
       if (updated.length === activeBlend.letters.length) {
         setIsSuccess(true);
+        sfx.playFullCelebration();
+        confetti({ particleCount: 80, spread: 70 });
         setTimeout(() => {
-          speech.speak(`برافو يا بطل! كوّنت كلمة ${activeBlend.word}! ${activeBlend.audio}`);
+          speech.speak(`تسلم إيدك يا بطل! ركّبت كلمة: ${activeBlend.word}! ${activeBlend.audio}`);
           if (onAddStars) onAddStars(2);
-        }, 500);
+        }, 900);
       }
     } else {
-      speech.speak('لا يا بطل، جرّب الحرف اللي بعده بالترتيب!');
+      sfx.playTryAgain();
+      speech.speak('لا يا بطل، فكّر في صوت الحرف اللي بعده!');
     }
   };
 

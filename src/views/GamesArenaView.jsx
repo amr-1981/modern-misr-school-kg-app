@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Volume2, Award, RotateCcw, Sparkles, CheckCircle2, XCircle } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { KG_GAMES_POOL } from '../data/kg1CurriculumData';
-import { speech } from '../services/speechService';
+import { speech, sfx } from '../services/speechService';
 
 export default function GamesArenaView({ onRecordGame }) {
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -22,8 +23,10 @@ export default function GamesArenaView({ onRecordGame }) {
     const isCorrect = opt.word === currentQ.correctWord;
     if (isCorrect) {
       setScore(prev => prev + 1);
-      speech.speakEgyptianPraise();
+      speech.playRewardCelebration('برافو عليك!');
+      confetti({ particleCount: 50, spread: 60 });
     } else {
+      sfx.playTryAgain();
       speech.speak(`معلش يا بطل فكّر تاني! الإجابة الصح هي: ${currentQ.correctWord}!`);
     }
   };
@@ -37,7 +40,9 @@ export default function GamesArenaView({ onRecordGame }) {
     } else {
       setIsFinished(true);
       onRecordGame({ score, total: KG_GAMES_POOL.length, starsEarned: score });
-      speech.speak(`أحسنت يا بطل المدرسة المصرية الحديثة! خلصت المسابقة وجبت ${score} من ${KG_GAMES_POOL.length}!`);
+      sfx.playFullCelebration();
+      confetti({ particleCount: 100, spread: 80 });
+      speech.speak(`يا سلام على الشطارة يا بطل المدرسة المصرية الحديثة بطرابلس! جبت ${score} من ${KG_GAMES_POOL.length}!`);
     }
   };
 
