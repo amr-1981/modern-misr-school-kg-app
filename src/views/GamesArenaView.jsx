@@ -22,9 +22,9 @@ export default function GamesArenaView({ onRecordGame }) {
     const isCorrect = opt.word === currentQ.correctWord;
     if (isCorrect) {
       setScore(prev => prev + 1);
-      speech.speak(`برافو يا بطل! إجابة صحيحة، ${opt.word}!`);
+      speech.speakEgyptianPraise();
     } else {
-      speech.speak(`محاولة جميلة، الإجابة الصحيحة هي ${currentQ.correctWord}!`);
+      speech.speak(`معلش يا بطل فكّر تاني! الإجابة الصح هي: ${currentQ.correctWord}!`);
     }
   };
 

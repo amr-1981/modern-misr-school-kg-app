@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import TracingCanvasModal from './components/TracingCanvasModal';
 import LettersGardenView from './views/LettersGardenView';
+import BookActivitiesView from './views/BookActivitiesView';
 import StoriesTheaterView from './views/StoriesTheaterView';
 import WritingAndBlendingView from './views/WritingAndBlendingView';
 import GamesArenaView from './views/GamesArenaView';
@@ -80,6 +81,12 @@ export default function App() {
             masteredLetters={masteredLetters}
             onOpenTracing={(l) => setTracingLetter(l)}
             onMarkMastered={handleMarkLetterMastered}
+          />
+        )}
+
+        {activeTab === 'book-activities' && (
+          <BookActivitiesView
+            onAddStars={handleAddStars}
           />
         )}
 
