@@ -10,6 +10,7 @@ import ParentsAndCertificateView from './views/ParentsAndCertificateView';
 
 import { SCHOOL_INFO } from './data/kg1CurriculumData';
 import { storageService } from './services/storageService';
+import { speech } from './services/speechService';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('letters');
@@ -19,6 +20,7 @@ export default function App() {
   const [completedStories, setCompletedStories] = useState(storageService.getCompletedStories());
   const [gameScores, setGameScores] = useState(storageService.getGameScores());
   const [tracingLetter, setTracingLetter] = useState(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const refreshData = () => {
     setChildName(storageService.getChildName());
@@ -30,6 +32,23 @@ export default function App() {
 
   useEffect(() => {
     refreshData();
+
+    const unsub = speech.subscribe((event) => {
+      if (event === 'start') {
+        setIsSpeaking(true);
+      } else if (event === 'end' || event === 'stop') {
+        setIsSpeaking(false);
+      }
+    });
+
+    const interval = setInterval(() => {
+      setIsSpeaking(speech.isSpeaking());
+    }, 400);
+
+    return () => {
+      unsub();
+      clearInterval(interval);
+    };
   }, []);
 
   const handleSaveChildName = (name) => {
@@ -73,7 +92,7 @@ export default function App() {
         stars={stars}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-6">
         {activeTab === 'letters' && (
           <LettersGardenView
             childName={childName}
@@ -121,6 +140,30 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Floating Audio Controller Bar (يظهر عندما يكون الشرح الصوتي شغالاً) */}
+      {isSpeaking && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-[92%] sm:w-auto bg-slate-950/90 text-white backdrop-blur-md px-4 py-2.5 rounded-full shadow-2xl border-2 border-amber-300 flex items-center justify-between gap-3 animate-in slide-in-from-bottom-5">
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-end gap-1 h-5">
+              <span className="w-1 bg-amber-400 rounded-full animate-wave-1"></span>
+              <span className="w-1 bg-amber-300 rounded-full animate-wave-2"></span>
+              <span className="w-1 bg-amber-500 rounded-full animate-wave-3"></span>
+            </div>
+            <span className="text-xs font-black text-amber-200 whitespace-nowrap">
+              جاري الشرح الصوتي الآن...
+            </span>
+          </div>
+
+          <button
+            onClick={() => speech.stop()}
+            className="px-3.5 py-1.5 rounded-full bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-black text-xs flex items-center gap-1.5 shadow-md transition-all shrink-0"
+          >
+            <span>⏹️</span>
+            <span>إيقاف الصوت</span>
+          </button>
+        </div>
+      )}
 
       {/* Interactive Tracing Canvas Modal */}
       {tracingLetter && (

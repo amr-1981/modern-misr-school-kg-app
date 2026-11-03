@@ -388,6 +388,10 @@ class SpeechService {
     this.playTryAgain();
   }
 
+  isSpeaking() {
+    return Boolean(this.isPlaying || (this.synth && this.synth.speaking));
+  }
+
   stop() {
     this.releaseWakeLock();
     if (this.synth) {

@@ -33,21 +33,21 @@ export default function LettersGardenView({
     <div className="space-y-8 pb-16">
       
       {/* Hero Banner with School Identity */}
-      <div className="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border-2 border-amber-300/40 relative overflow-hidden">
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 rounded-3xl p-4 sm:p-8 text-white shadow-xl border-2 border-amber-300/40 relative overflow-hidden">
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
           
-          <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-right">
+          <div className="flex flex-col sm:flex-row items-center gap-3.5 sm:gap-5 text-center sm:text-right">
             <img 
               src={SCHOOL_INFO.logo} 
               alt={SCHOOL_INFO.nameAr}
-              className="w-24 h-24 rounded-3xl bg-white p-1.5 shadow-lg border-2 border-amber-400 shrink-0 animate-float"
+              className="w-16 h-16 sm:w-24 sm:h-24 rounded-3xl bg-white p-1.5 shadow-lg border-2 border-amber-400 shrink-0 animate-float"
             />
             <div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black mb-2 shadow">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2 shadow">
                 <Sparkles className="w-3.5 h-3.5" />
                 {SCHOOL_INFO.nameAr} • {SCHOOL_INFO.nameEn}
               </span>
-              <h1 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+              <h1 className="text-xl sm:text-3xl font-black text-white leading-tight">
                 {childName ? `أهلاً بالبطل المميز: ${childName} 🌟` : 'مرحباً بأبطال رياض الأطفال (KG1) 🌟'}
               </h1>
               <p className="text-amber-100 text-xs sm:text-sm mt-1 font-bold">
@@ -57,7 +57,7 @@ export default function LettersGardenView({
           </div>
 
           {/* Child Name Input Box */}
-          <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 w-full md:w-auto min-w-[260px]">
+          <div className="bg-white/10 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/20 w-full md:w-auto min-w-0 md:min-w-[260px]">
             {editingName ? (
               <form onSubmit={handleSaveName} className="space-y-2">
                 <label className="block text-xs font-extrabold text-amber-300">نَشَاط (مَنْ أَكُونُ؟) - اكتب اسم البطل:</label>
@@ -71,7 +71,7 @@ export default function LettersGardenView({
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shrink-0 shadow"
+                    className="px-3 sm:px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shrink-0 shadow"
                   >
                     حفظ 🔊
                   </button>
@@ -81,7 +81,7 @@ export default function LettersGardenView({
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <span className="text-[11px] text-amber-200 block font-bold">بطاقة (أَنَا مُمَيَّزٌ):</span>
-                  <strong className="text-base text-white font-black">اسْمِي: {childName}</strong>
+                  <strong className="text-sm sm:text-base text-white font-black">اسْمِي: {childName}</strong>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <button
@@ -106,20 +106,20 @@ export default function LettersGardenView({
       </div>
 
       {/* 10 Textbook Letters Grid (Organized by Textbook Order: أ م ب ف ن ل ح ر ت س) */}
-      <div className="bg-white rounded-3xl p-6 border-2 border-amber-200 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+      <div className="bg-white rounded-3xl p-3 sm:p-6 border-2 border-amber-200 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3 sm:mb-4">
           <div>
-            <h2 className="text-xl font-black text-slate-900 flex items-center gap-2">
+            <h2 className="text-base sm:text-xl font-black text-slate-900 flex items-center gap-2">
               <span>🔤 حديقة الحروف العشرة في الكتاب</span>
             </h2>
-            <p className="text-xs text-slate-500 font-bold">اضغط على أي حرف لتسمع أنشودته وحركاته الأربعة وتلعب معه</p>
+            <p className="text-[11px] sm:text-xs text-slate-500 font-bold">اضغط على أي حرف لتسمع أنشودته وحركاته الأربعة وتلعب معه</p>
           </div>
-          <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+          <span className="text-[11px] sm:text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 sm:px-3 py-1 rounded-full border border-emerald-300">
             أتقنت {masteredLetters.length} من {LETTERS_DATA.length} حروف ⭐
           </span>
         </div>
 
-        <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-10 gap-2 sm:gap-2.5 w-full">
+        <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-10 gap-1.5 sm:gap-2.5 w-full">
           {LETTERS_DATA.map((item) => {
             const isSelected = selectedLetter.id === item.id;
             const isMastered = masteredLetters.includes(item.id);
@@ -127,19 +127,19 @@ export default function LettersGardenView({
               <button
                 key={item.id}
                 onClick={() => handleSelectLetter(item)}
-                className={`relative p-2 sm:p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all min-w-0 w-full ${
+                className={`relative p-1.5 sm:p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all min-w-0 w-full ${
                   isSelected
                     ? `bg-gradient-to-br ${item.color} text-white border-transparent shadow-lg scale-105 ring-2 ring-amber-300`
                     : `${item.bgLight} ${item.borderLight} text-slate-800 hover:scale-105`
                 }`}
               >
                 {isMastered && (
-                  <span className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[10px] font-black shadow">
+                  <span className="absolute -top-1.5 -left-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[9px] sm:text-[10px] font-black shadow">
                     ⭐
                   </span>
                 )}
-                <span className="text-2xl sm:text-3xl font-black mb-0.5">{item.char}</span>
-                <span className={`text-[10px] sm:text-[11px] font-extrabold truncate w-full text-center ${isSelected ? 'text-white/90' : 'text-slate-600'}`}>
+                <span className="text-xl sm:text-3xl font-black mb-0.5">{item.char}</span>
+                <span className={`text-[9px] sm:text-[11px] font-extrabold truncate w-full text-center ${isSelected ? 'text-white/90' : 'text-slate-600'}`}>
                   {item.name}
                 </span>
               </button>
@@ -150,46 +150,46 @@ export default function LettersGardenView({
 
       {/* Active Letter Interactive Theater */}
       {selectedLetter && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           
           {/* Left 2 Columns: Harakat Seasons & Words */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             
             {/* Main Letter Stage */}
-            <div className={`bg-gradient-to-br ${selectedLetter.color} rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6`}>
-              <div className="space-y-3 text-center sm:text-right">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/20 text-xs font-black">
+            <div className={`bg-gradient-to-br ${selectedLetter.color} rounded-3xl p-4 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6`}>
+              <div className="space-y-2.5 sm:space-y-3 text-center sm:text-right">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/20 text-[11px] sm:text-xs font-black">
                   <span>الموضوع: {selectedLetter.topicTitle}</span>
                   <span>•</span>
                   <span>صفحات الكتاب: {selectedLetter.bookPages}</span>
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-black">{selectedLetter.name} ({selectedLetter.char})</h3>
-                <p className="text-sm sm:text-base text-white/95 leading-relaxed font-bold max-w-xl">
+                <h3 className="text-2xl sm:text-4xl font-black">{selectedLetter.name} ({selectedLetter.char})</h3>
+                <p className="text-xs sm:text-base text-white/95 leading-relaxed font-bold max-w-xl">
                   {selectedLetter.chantAudio}
                 </p>
 
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 pt-2">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-2.5 pt-1 sm:pt-2">
                   <button
                     onClick={() => speech.speak(selectedLetter.chantAudio)}
-                    className="px-4 py-2.5 rounded-2xl bg-white text-slate-900 font-black text-xs shadow-md hover:scale-105 transition-transform flex items-center gap-1.5"
+                    className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-white text-slate-900 font-black text-[11px] sm:text-xs shadow-md hover:scale-105 transition-transform flex items-center gap-1.5"
                   >
-                    <Volume2 className="w-4 h-4 text-emerald-600" />
+                    <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
                     <span>اسمع أنشودة الحرف</span>
                   </button>
 
                   <button
                     onClick={() => speech.speak(selectedLetter.storyAudio)}
-                    className="px-4 py-2.5 rounded-2xl bg-amber-300 text-slate-950 font-black text-xs shadow-md hover:scale-105 transition-transform flex items-center gap-1.5"
+                    className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-amber-300 text-slate-950 font-black text-[11px] sm:text-xs shadow-md hover:scale-105 transition-transform flex items-center gap-1.5"
                   >
-                    <BookOpen className="w-4 h-4" />
+                    <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>اسمع حدوتة الحرف</span>
                   </button>
 
                   <button
                     onClick={() => onOpenTracing(selectedLetter)}
-                    className="px-4 py-2.5 rounded-2xl bg-slate-950/80 hover:bg-slate-950 text-white font-black text-xs shadow-md hover:scale-105 transition-transform flex items-center gap-1.5 border border-white/20"
+                    className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-slate-950/80 hover:bg-slate-950 text-white font-black text-[11px] sm:text-xs shadow-md hover:scale-105 transition-transform flex items-center gap-1.5 border border-white/20"
                   >
-                    <PenTool className="w-4 h-4 text-amber-400" />
+                    <PenTool className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
                     <span>تتبع واكتب الحرف ✏️</span>
                   </button>
                 </div>
@@ -198,10 +198,10 @@ export default function LettersGardenView({
               {/* Giant Character Display */}
               <div 
                 onClick={() => speech.speak(selectedLetter.name)}
-                className="w-36 h-36 sm:w-40 sm:h-40 rounded-3xl bg-white text-slate-900 flex flex-col items-center justify-center shadow-2xl cursor-pointer hover:scale-105 transition-transform shrink-0 border-4 border-amber-300"
+                className="w-28 h-28 sm:w-40 sm:h-40 rounded-3xl bg-white text-slate-900 flex flex-col items-center justify-center shadow-2xl cursor-pointer hover:scale-105 transition-transform shrink-0 border-4 border-amber-300"
               >
-                <span className="text-7xl font-black leading-none">{selectedLetter.char}</span>
-                <div className="flex items-center gap-2 mt-3 text-sm font-black text-emerald-700 bg-emerald-50 px-3 py-0.5 rounded-full">
+                <span className="text-5xl sm:text-7xl font-black leading-none">{selectedLetter.char}</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3 text-xs sm:text-sm font-black text-emerald-700 bg-emerald-50 px-2 sm:px-3 py-0.5 rounded-full">
                   {selectedLetter.forms.map((f, i) => (
                     <span key={i}>{f}</span>
                   ))}

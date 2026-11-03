@@ -309,18 +309,18 @@ export default function BookActivitiesView({ onAddStars }) {
     <div className="space-y-6 pb-16">
       
       {/* Top Banner with Book Identity */}
-      <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl border-4 border-amber-300 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-3xl p-4 sm:p-8 text-white shadow-xl border-2 sm:border-4 border-amber-300 relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4 text-center sm:text-right">
-            <div className="w-18 h-18 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center text-4xl sm:text-5xl shadow-inner border border-white/30">
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-center sm:text-right">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-md rounded-2xl sm:rounded-3xl flex items-center justify-center text-3xl sm:text-5xl shadow-inner border border-white/30 shrink-0">
               📝
             </div>
             <div>
-              <div className="inline-flex items-center gap-2 bg-white/25 px-3 py-1 rounded-full text-xs font-black mb-1">
+              <div className="inline-flex items-center gap-1.5 bg-white/25 px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-black mb-1">
                 <Sparkles className="w-3.5 h-3.5 text-amber-200" />
                 <span>الأنشطة والتدريبات المعتمدة في كتاب الوزارة (تواصل)</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black">
+              <h1 className="text-xl sm:text-3xl font-black">
                 تَمَارِينُ وَأَنْشِطَةُ كِتَابِ تَوَاصُل
               </h1>
               <p className="text-amber-100 text-xs sm:text-sm mt-1 font-bold">
@@ -333,9 +333,9 @@ export default function BookActivitiesView({ onAddStars }) {
             onClick={() => {
               speech.speak('يلا يا بطل.. اختر الحرف اللي عايز تحل تمارينه من الكتاب الوزاري، واسمع مني كل نشاط عشان تجيب الدرجة النهائية!');
             }}
-            className="flex items-center gap-2 px-5 py-3 bg-white text-slate-900 rounded-2xl text-xs sm:text-sm font-black shadow-lg hover:scale-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white text-slate-900 rounded-2xl text-xs sm:text-sm font-black shadow-lg hover:scale-105 active:scale-95 transition-all shrink-0"
           >
-            <Volume2 className="w-5 h-5 text-amber-600 animate-pulse" />
+            <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 animate-pulse" />
             <span>شرح الأنشطة بالصوت 🔊</span>
           </button>
         </div>

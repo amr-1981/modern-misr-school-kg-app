@@ -140,13 +140,13 @@ export default function WritingAndBlendingView({ onOpenTracing, onAddStars }) {
             </div>
 
             {/* Slots */}
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
               {activeBlend.letters.map((targetChar, idx) => {
                 const filledChar = pickedLetters[idx];
                 return (
                   <React.Fragment key={idx}>
                     <div
-                      className={`w-20 h-20 rounded-2xl border-4 flex items-center justify-center text-4xl font-black transition-all ${
+                      className={`w-14 h-14 sm:w-20 sm:h-20 rounded-2xl border-2 sm:border-4 flex items-center justify-center text-2xl sm:text-4xl font-black transition-all ${
                         filledChar
                           ? 'bg-emerald-500 text-white border-emerald-600 scale-105 shadow-md'
                           : 'bg-slate-50 border-dashed border-slate-300 text-slate-300'
@@ -155,17 +155,17 @@ export default function WritingAndBlendingView({ onOpenTracing, onAddStars }) {
                       {filledChar || '؟'}
                     </div>
                     {idx < activeBlend.letters.length - 1 && (
-                      <span className="text-2xl font-black text-slate-400">+</span>
+                      <span className="text-xl sm:text-2xl font-black text-slate-400">+</span>
                     )}
                   </React.Fragment>
                 );
               })}
 
-              <span className="text-2xl font-black text-slate-400">=</span>
+              <span className="text-xl sm:text-2xl font-black text-slate-400">=</span>
 
-              <div className={`px-6 h-20 rounded-2xl border-4 flex items-center justify-center text-3xl font-black transition-all ${
+              <div className={`px-4 sm:px-6 h-14 sm:h-20 rounded-2xl border-2 sm:border-4 flex items-center justify-center text-2xl sm:text-3xl font-black transition-all ${
                 isSuccess
-                  ? 'bg-amber-400 text-slate-950 border-amber-500 shadow-lg scale-110'
+                  ? 'bg-amber-400 text-slate-950 border-amber-500 shadow-lg scale-105'
                   : 'bg-slate-100 border-slate-200 text-slate-400'
               }`}>
                 {isSuccess ? activeBlend.word : '......'}

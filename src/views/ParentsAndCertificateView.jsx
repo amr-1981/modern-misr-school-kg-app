@@ -95,46 +95,46 @@ export default function ParentsAndCertificateView({
       </div>
 
       {/* Printable Official School Certificate (شهادة تقدير المدرسة المصرية الحديثة - طرابلس) */}
-      <div className="bg-white rounded-3xl p-8 sm:p-12 border-8 border-double border-amber-400 shadow-2xl text-center relative overflow-hidden">
-        <div className="max-w-2xl mx-auto space-y-5">
+      <div className="bg-white rounded-3xl p-4 sm:p-12 border-4 sm:border-8 border-double border-amber-400 shadow-2xl text-center relative overflow-hidden">
+        <div className="max-w-2xl mx-auto space-y-4 sm:space-y-5">
           
           <div className="flex flex-col items-center justify-center">
             <img 
               src={SCHOOL_INFO.logo} 
               alt={SCHOOL_INFO.nameAr}
-              className="w-28 h-28 object-contain mb-2"
+              className="w-20 h-20 sm:w-28 sm:h-28 object-contain mb-2"
             />
-            <h3 className="text-xl font-black text-blue-950">{SCHOOL_INFO.nameAr}</h3>
-            <p className="text-xs font-extrabold text-slate-500 tracking-wide">{SCHOOL_INFO.nameEn}</p>
+            <h3 className="text-lg sm:text-xl font-black text-blue-950">{SCHOOL_INFO.nameAr}</h3>
+            <p className="text-[11px] sm:text-xs font-extrabold text-slate-500 tracking-wide">{SCHOOL_INFO.nameEn}</p>
           </div>
 
-          <div className="inline-block px-6 py-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-base shadow">
+          <div className="inline-block px-4 sm:px-6 py-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-sm sm:text-base shadow">
             🏆 شَهَادَةُ تَقْدِيرٍ وَتَفَوُّقٍ 🏆
           </div>
 
-          <p className="text-sm sm:text-base font-bold text-slate-700 leading-relaxed">
+          <p className="text-xs sm:text-base font-bold text-slate-700 leading-relaxed">
             تَفْخَرُ إدارةُ <strong className="text-blue-950">المدرسة المصرية الحديثة - طرابلس</strong> بمنح هذه الشهادة للبطل المميز:
           </p>
 
-          <div className="py-3 px-8 rounded-2xl bg-amber-50 border-2 border-amber-300 inline-block min-w-[260px]">
-            <span className="text-2xl sm:text-3xl font-black text-blue-950">
+          <div className="py-2.5 sm:py-3 px-4 sm:px-8 rounded-2xl bg-amber-50 border-2 border-amber-300 inline-block min-w-0 sm:min-w-[260px] max-w-full">
+            <span className="text-xl sm:text-3xl font-black text-blue-950 break-words">
               {childName || 'بطل رياض الأطفال المميز'}
             </span>
           </div>
 
-          <p className="text-sm sm:text-base font-bold text-slate-700 leading-relaxed">
+          <p className="text-xs sm:text-base font-bold text-slate-700 leading-relaxed">
             لتفوقه واجتهاده الرائع في تعلم حروف وكلمات وقصص كتاب <strong className="text-emerald-800">(تواصل - اللغة العربية - المستوى الأول KG1)</strong> وحصوله على <strong className="text-amber-700">{stars} نجمة ذهبية ⭐</strong> وإتقان <strong className="text-emerald-700">{masteredLetters.length} من 10 حروف</strong>.
           </p>
 
-          <div className="pt-6 border-t border-slate-200 flex items-center justify-between text-xs font-black text-slate-600">
+          <div className="pt-4 sm:pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-black text-slate-600">
             <div>
               <span className="block text-slate-400">معلم فصل رياض الأطفال</span>
-              <span className="text-blue-950 mt-1 block">أسرة اللغة العربية</span>
+              <span className="text-blue-950 mt-0.5 sm:mt-1 block">أسرة اللغة العربية</span>
             </div>
-            <div className="text-3xl">🌟🇱🇾🇪🇬🌟</div>
+            <div className="text-2xl sm:text-3xl">🌟🇱🇾🇪🇬🌟</div>
             <div>
               <span className="block text-slate-400">إدارة المدرسة</span>
-              <span className="text-blue-950 mt-1 block">{SCHOOL_INFO.nameAr}</span>
+              <span className="text-blue-950 mt-0.5 sm:mt-1 block">{SCHOOL_INFO.nameAr}</span>
             </div>
           </div>
 

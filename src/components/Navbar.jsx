@@ -10,6 +10,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
   const [currentVoiceName, setCurrentVoiceName] = useState('');
   const [currentRate, setCurrentRate] = useState(0.88);
   const [currentPitch, setCurrentPitch] = useState(1.15);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
     const updateVoiceState = () => {
@@ -21,12 +22,24 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
 
     updateVoiceState();
     const unsub = speech.subscribe((event, data) => {
+      if (event === 'start') {
+        setIsSpeaking(true);
+      } else if (event === 'end' || event === 'stop') {
+        setIsSpeaking(false);
+      }
       if (event === 'voicesUpdated' || event === 'voiceChanged') {
         updateVoiceState();
       }
     });
 
-    return unsub;
+    const interval = setInterval(() => {
+      setIsSpeaking(speech.isSpeaking());
+    }, 400);
+
+    return () => {
+      unsub();
+      clearInterval(interval);
+    };
   }, []);
 
   const navItems = [
@@ -49,8 +62,8 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-2 border-amber-200 shadow-sm no-print w-full max-w-full">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-2 sm:gap-4">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-1.5 sm:gap-4">
           
           {/* School Logo & Clean Brand Header */}
           <div 
@@ -58,9 +71,9 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
               setActiveTab('letters');
               speech.speak('أهلاً بيك يا بطل في المدرسة المصرية الحديثة بطرابلس! يلا نلعب ونتعلم سوا!');
             }}
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer group shrink-0 min-w-0"
           >
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-white border-2 border-amber-300 shadow-sm group-hover:scale-105 transition-transform flex items-center justify-center p-0.5">
+            <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-white border-2 border-amber-300 shadow-sm group-hover:scale-105 transition-transform flex items-center justify-center p-0.5 shrink-0">
               <img 
                 src={SCHOOL_INFO.logo} 
                 alt={SCHOOL_INFO.nameAr}
@@ -68,19 +81,19 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
               />
             </div>
 
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="font-black text-sm sm:text-base md:text-lg text-blue-950 tracking-tight whitespace-nowrap">
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="font-black text-xs sm:text-base md:text-lg text-blue-950 tracking-tight whitespace-nowrap truncate">
                   {SCHOOL_INFO.nameAr}
                 </span>
 
-                <span className="inline-flex items-center gap-1 whitespace-nowrap text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 shadow-xs">
+                <span className="inline-flex items-center gap-1 whitespace-nowrap text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 shadow-xs shrink-0">
                   <span>KG1</span>
                   <span>•</span>
                   <span>تواصل</span>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-bold hidden sm:block">
+              <p className="text-[10px] sm:text-[11px] text-slate-500 font-bold hidden sm:block truncate">
                 {SCHOOL_INFO.nameEn} • روضة الأطفال (المستوى الأول)
               </p>
             </div>
@@ -107,12 +120,27 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
             })}
           </nav>
 
-          {/* Controls: Voice Settings, Child Badge, Stars */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Controls: Stop Voice, Voice Settings, Child Badge, Stars */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            
+            {/* Quick Stop Audio Button */}
+            <button
+              onClick={() => speech.stop()}
+              className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-2xl text-xs font-black transition-all ${
+                isSpeaking
+                  ? 'bg-rose-600 text-white shadow-md ring-2 ring-rose-300 animate-pulse'
+                  : 'bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200'
+              }`}
+              title="إيقاف الشرح الصوتي فوراً"
+            >
+              <span className="text-sm">⏹️</span>
+              <span className="hidden sm:inline">إيقاف الصوت</span>
+            </button>
+
             {/* Egyptian Voice Tuner Button */}
             <button
               onClick={() => setShowVoiceModal(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 text-xs font-black shadow-xs transition-colors"
+              className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 text-xs font-black shadow-xs transition-colors"
               title="ضبط صوت المعلمة المصرية"
             >
               <span className="text-sm">🎙️</span>
@@ -122,7 +150,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
             {childName && (
               <button
                 onClick={() => speech.speak(`أهلاً بالبطل الشاطر ${childName}! معاك ${stars} نجمة ذهبية بتلمع!`)}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 text-emerald-900 text-xs font-black hover:bg-emerald-100 transition-colors"
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 text-emerald-900 text-xs font-black hover:bg-emerald-100 transition-colors"
               >
                 <span>👦 {childName}</span>
                 <Volume2 className="w-3.5 h-3.5 text-emerald-600" />
@@ -134,10 +162,10 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
                 sfx.playMagicChime();
                 confetti({ particleCount: 30, spread: 50 });
               }}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform border border-amber-500/30"
+              className="flex items-center gap-1 px-2.5 sm:px-3.5 py-1.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black text-xs sm:text-sm shadow-sm cursor-pointer hover:scale-105 transition-transform border border-amber-500/30"
               title="نجوم البطل"
             >
-              <Star className="w-4 h-4 fill-slate-950 text-slate-950" />
+              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-slate-950 text-slate-950" />
               <span>{stars}</span>
             </div>
           </div>
@@ -145,20 +173,20 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
         </div>
 
         {/* Mobile, Tablet & Compact Navigation Bar */}
-        <div className="flex 2xl:hidden overflow-x-auto py-2.5 border-t border-amber-100 gap-2 items-center no-scrollbar">
+        <div className="flex 2xl:hidden overflow-x-auto py-2 border-t border-amber-100 gap-1.5 items-center no-scrollbar -mx-2 px-2">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-black whitespace-nowrap shrink-0 transition-all ${
+                className={`flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-2xl text-[11px] sm:text-xs font-black whitespace-nowrap shrink-0 transition-all ${
                   isActive
                     ? 'bg-blue-900 text-white shadow ring-2 ring-amber-300'
                     : 'bg-white text-slate-700 border border-slate-200'
                 }`}
               >
-                <span className="text-sm">{item.emoji}</span>
+                <span className="text-xs sm:text-sm">{item.emoji}</span>
                 <span>{item.label}</span>
               </button>
             );
