@@ -4,10 +4,17 @@ const KEYS = {
   MASTERED_LETTERS: 'mms_kg1_mastered_letters',
   COMPLETED_STORIES: 'mms_kg1_completed_stories',
   GAME_SCORES: 'mms_kg1_game_scores',
-  MISSED_ITEMS: 'mms_kg1_missed_items'
+  MISSED_ITEMS: 'mms_kg1_missed_items',
+  VOICE_MUTED: 'mms_kg1_voice_muted'
 };
 
 export const storageService = {
+  getVoiceMuted() {
+    return localStorage.getItem(KEYS.VOICE_MUTED) === 'true';
+  },
+  setVoiceMuted(muted) {
+    localStorage.setItem(KEYS.VOICE_MUTED, muted ? 'true' : 'false');
+  },
   getChildName() {
     return localStorage.getItem(KEYS.CHILD_NAME) || '';
   },

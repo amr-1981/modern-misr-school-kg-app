@@ -156,11 +156,12 @@ export default function App() {
           </div>
 
           <button
-            onClick={() => speech.stop()}
+            onClick={() => speech.setMuted(true)}
             className="px-3.5 py-1.5 rounded-full bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-black text-xs flex items-center gap-1.5 shadow-md transition-all shrink-0"
+            title="إيقاف الشرح الصوتي حتى تحريره (المؤثرات الصوتية تعمل)"
           >
-            <span>⏹️</span>
-            <span>إيقاف الصوت</span>
+            <span>🔇</span>
+            <span>إيقاف الشرح</span>
           </button>
         </div>
       )}

@@ -11,6 +11,7 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
   const [currentRate, setCurrentRate] = useState(0.88);
   const [currentPitch, setCurrentPitch] = useState(1.15);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isVoiceMuted, setIsVoiceMuted] = useState(speech.isMuted);
 
   useEffect(() => {
     const updateVoiceState = () => {
@@ -21,11 +22,15 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
     };
 
     updateVoiceState();
+    setIsVoiceMuted(speech.isMuted);
+
     const unsub = speech.subscribe((event, data) => {
       if (event === 'start') {
         setIsSpeaking(true);
       } else if (event === 'end' || event === 'stop') {
         setIsSpeaking(false);
+      } else if (event === 'muteChanged') {
+        setIsVoiceMuted(data.isMuted);
       }
       if (event === 'voicesUpdated' || event === 'voiceChanged') {
         updateVoiceState();
@@ -120,21 +125,33 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
             })}
           </nav>
 
-          {/* Controls: Stop Voice, Voice Settings, Child Badge, Stars */}
+          {/* Controls: Voice Explanation Toggle (Mute/Unmute), Voice Settings, Child Badge, Stars */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             
-            {/* Quick Stop Audio Button */}
+            {/* Persistent Voice Explanation Mute / Unmute Button */}
             <button
-              onClick={() => speech.stop()}
+              onClick={() => {
+                const nextState = speech.toggleMute();
+                setIsVoiceMuted(nextState);
+                sfx.playPop();
+              }}
               className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-2xl text-xs font-black transition-all ${
-                isSpeaking
-                  ? 'bg-rose-600 text-white shadow-md ring-2 ring-rose-300 animate-pulse'
-                  : 'bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200'
+                isVoiceMuted
+                  ? 'bg-rose-100 hover:bg-rose-200 text-rose-950 border-2 border-rose-400 ring-2 ring-rose-200 shadow-sm'
+                  : isSpeaking
+                    ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-300 animate-pulse'
+                    : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300'
               }`}
-              title="إيقاف الشرح الصوتي فوراً"
+              title={
+                isVoiceMuted
+                  ? 'الشرح الصوتي متوقف حتى تحريره (المؤثرات الصوتية تعمل) • اضغط للتشغيل'
+                  : 'الشرح الصوتي يعمل • اضغط لإيقاف الشرح الصوتي حتى تحريره'
+              }
             >
-              <span className="text-sm">⏹️</span>
-              <span className="hidden sm:inline">إيقاف الصوت</span>
+              <span className="text-sm">{isVoiceMuted ? '🔇' : '🔊'}</span>
+              <span className="hidden sm:inline">
+                {isVoiceMuted ? 'الشرح متوقف' : (isSpeaking ? 'جاري الشرح...' : 'الشرح يعمل')}
+              </span>
             </button>
 
             {/* Egyptian Voice Tuner Button */}
