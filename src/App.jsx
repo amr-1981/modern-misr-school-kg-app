@@ -7,6 +7,8 @@ import StoriesTheaterView from './views/StoriesTheaterView';
 import WritingAndBlendingView from './views/WritingAndBlendingView';
 import GamesArenaView from './views/GamesArenaView';
 import ParentsAndCertificateView from './views/ParentsAndCertificateView';
+import WorksheetsView from './views/WorksheetsView';
+import VideoLessonsView from './views/VideoLessonsView';
 
 import { SCHOOL_INFO } from './data/kg1CurriculumData';
 import { storageService } from './services/storageService';
@@ -107,6 +109,16 @@ export default function App() {
           <BookActivitiesView
             onAddStars={handleAddStars}
           />
+        )}
+
+        {activeTab === 'worksheets' && (
+          <WorksheetsView
+            childName={childName}
+          />
+        )}
+
+        {activeTab === 'videos' && (
+          <VideoLessonsView />
         )}
 
         {activeTab === 'stories' && (

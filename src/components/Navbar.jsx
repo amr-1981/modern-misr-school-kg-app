@@ -50,6 +50,8 @@ export default function Navbar({ activeTab, setActiveTab, childName, stars }) {
   const navItems = [
     { id: 'letters', label: 'حديقة الحروف', emoji: '🔤', audio: 'يلا بينا على حديقة الحروف الجميلة!' },
     { id: 'book-activities', label: 'تمارين الكتاب', emoji: '📝', audio: 'يلا نحل تمارين وأنشطة كتاب تواصل الوزاري!' },
+    { id: 'worksheets', label: 'شيتات وتلوين للطباعة', emoji: '🖨️', audio: 'شيتات وأوراق عمل وتلوين جاهزة للطباعة بمقاس A4!' },
+    { id: 'videos', label: 'فيديوهات تواصل', emoji: '📺', audio: 'ركن الدروس وفيديوهات شرح كتاب تواصل وقنوات اليوتيوب التعليمية!' },
     { id: 'stories', label: 'حكايات تواصل', emoji: '📖', audio: 'يلا نسمع حكايات وقصص كتاب تواصل الممتعة!' },
     { id: 'board', label: 'سبورة الكتابة والدمج', emoji: '✏️', audio: 'سبورة الكتابة وتكوين الكلمات السحرية!' },
     { id: 'games', label: 'الألعاب الصوتية', emoji: '🎮', audio: 'يلا نلعب ونتسلى بالألعاب الصوتية وفرقعة البالونات!' },
