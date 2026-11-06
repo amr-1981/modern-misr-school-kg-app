@@ -3,6 +3,7 @@ import { Printer, Eye, CheckCircle2, Sparkles, Filter, Download, ArrowRight, X, 
 import { WORKSHEET_CATEGORIES, WORKSHEETS_DATA } from '../data/worksheetsData';
 import { SCHOOL_INFO } from '../data/kg1CurriculumData';
 import { speech, sfx } from '../services/speechService';
+import { renderColoringArtwork, OutlineLetterDisplay } from '../components/ColoringSvgAssets';
 
 export default function WorksheetsView({ childName }) {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -188,9 +189,23 @@ export default function WorksheetsView({ childName }) {
                 )}
 
                 {sheet.category === 'coloring' && (
-                  <div className="py-2 flex items-center justify-center gap-2">
-                    <span className="text-4xl">{sheet.wordEmoji}</span>
-                    <span className="text-2xl font-black text-slate-700">{sheet.letterChar}</span>
+                  <div className="py-2.5 flex items-center justify-center gap-3 bg-white p-2 rounded-xl border border-dashed border-slate-300">
+                    <div className="w-14 h-14 flex items-center justify-center overflow-hidden shrink-0">
+                      {renderColoringArtwork(sheet.id, sheet.letterChar, "w-12 h-12")}
+                    </div>
+                    <div 
+                      className="text-3xl font-black font-arabic select-none shrink-0"
+                      style={{
+                        color: '#ffffff',
+                        WebkitTextStroke: '2.5px #0f172a',
+                        textStroke: '2.5px #0f172a'
+                      }}
+                    >
+                      {sheet.letterChar}
+                    </div>
+                    <span className="text-[10px] font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      رسم مفرغ 🖍️
+                    </span>
                   </div>
                 )}
 
@@ -365,22 +380,53 @@ export default function WorksheetsView({ childName }) {
                 </div>
               )}
 
-              {/* Content: 2. Coloring Sheet */}
+              {/* Content: 2. Coloring Sheet (صفحة تلوين حقيقية مفرغة للأطفال بالخطوط العريضة) */}
               {previewSheet.category === 'coloring' && (
                 <div className="space-y-4 text-center">
-                  <div className="p-8 border-4 border-dashed border-slate-400 rounded-3xl bg-white flex flex-col items-center justify-center space-y-4 min-h-[300px]">
-                    <span className="text-8xl">{previewSheet.wordEmoji}</span>
-                    <div className="text-7xl font-black tracking-widest text-slate-800 py-2 border-2 border-slate-300 px-8 rounded-2xl">
-                      {previewSheet.letterChar}
-                    </div>
-                    <span className="text-2xl font-black text-slate-700">
-                      {previewSheet.wordExample}
+                  
+                  {/* Coloring Header Guide */}
+                  <div className="p-3 bg-amber-50/70 border border-amber-300 rounded-xl text-xs font-bold text-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2">
+                    <span className="font-black text-amber-950">
+                      🖍️ لوّن الحرف المفرغ والرسمة الكرتونية الجميلة بألوانك الرائعة داخل الخطوط:
+                    </span>
+                    <span className="text-[11px] bg-white px-2.5 py-1 rounded-lg border border-amber-300 font-extrabold text-slate-700">
+                      🎨 الألوان المقترحة: {previewSheet.colorTarget}
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs font-bold text-slate-600 border-t border-slate-200 pt-3">
-                    <span>🎨 الألوان المقترحة: {previewSheet.colorTarget}</span>
-                    <span>⭐ تقييم التلوين: [ ممتاز • جيد جداً • رائع ]</span>
+                  {/* Main Printable Line-Art Coloring Box */}
+                  <div className="p-4 sm:p-6 border-4 border-dashed border-slate-700 rounded-3xl bg-white flex flex-col items-center justify-center space-y-4 min-h-[420px]">
+                    
+                    {/* Big Hollow Outline Letter to Color */}
+                    <div className="w-full flex items-center justify-center pb-2 border-b-2 border-dashed border-slate-300">
+                      <OutlineLetterDisplay 
+                        char={previewSheet.letterChar} 
+                        subText={`حَرْفُ (${previewSheet.letterChar}) مُفَرَّغٌ لِلتَّلْوِين`} 
+                      />
+                    </div>
+
+                    {/* Pure Black & White Vector Outline Drawings */}
+                    <div className="w-full flex items-center justify-center py-3">
+                      {renderColoringArtwork(previewSheet.id, previewSheet.letterChar, "w-64 h-64 sm:w-80 sm:h-80")}
+                    </div>
+
+                    {/* Word Caption in Hollow Line Art for Child to Trace & Color */}
+                    <div 
+                      className="text-2xl sm:text-3xl font-black font-arabic tracking-wider select-none px-6 py-2 border-2 border-slate-800 rounded-2xl bg-white shadow-xs"
+                      style={{
+                        color: '#ffffff',
+                        WebkitTextStroke: '2px #0f172a',
+                        textStroke: '2px #0f172a'
+                      }}
+                    >
+                      {previewSheet.wordExample}
+                    </div>
+                  </div>
+
+                  {/* Coloring Assessment Footer */}
+                  <div className="flex items-center justify-between text-xs font-black text-slate-700 border-t-2 border-slate-900 pt-3">
+                    <span>⭐ تقييم إتقان التلوين داخل الحدود: [ ممتاز 🌟 • جيد جداً ✨ • رائع 👏 ]</span>
+                    <span>توقيع المعلمة: ....................</span>
                   </div>
                 </div>
               )}
